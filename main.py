@@ -12,7 +12,8 @@ def crypt(fileName):
         SfileName = fileName.split(".")[0]
         if not os.path.exists(f'{SfileName}.crypt'):
             with open(f"{SfileName}.crypt", "w") as file:
-                chars = string.printable
+                spe_chars = "áàãăâéèêiíìĩóòõôơúùũyýỳđ"
+                chars = string.printable + spe_chars + spe_chars.upper()
                 crypted_chars = {}
                 for char in chars:
                     random_crypt_num = None
@@ -38,7 +39,11 @@ def crypt(fileName):
             index = 0
             for word in readed_lines:
                 for char in word:
-                    keys = [k for k, v in crypted_chars.items() if v == char][0]
+                    keys = ...
+                    try:
+                        keys = [k for k, v in crypted_chars.items() if v == char][0]
+                    except:
+                        keys = [k for k, v in crypted_chars.items() if v == " "][0]
                     file.write(str(keys) if index == 0 else f".{keys}")
                     index += 1
         os.remove(fileName)
@@ -65,7 +70,7 @@ def decrypt(fileName):
                 file.write(crypted_chars[index])
         print('The file was decrypted succesfully ;)')
     else:
-        print(f"Couldn't decrypt the file, because {SfileName[0]}.crypt can't be find !")
+        print(f"Couldn't decrypt the file, because {SfileName[0]}.crypt can't be found !")
 
 shouldDecrypt = int(input("[Crypt: 1, Decrypt: 2]> "))
 filename = input("[filename]> " if shouldDecrypt == 1 else "[filename.crypted]> ")
